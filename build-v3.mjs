@@ -327,7 +327,10 @@ const body = [
 const stem = single ? "knee-model" : "knee-v3";
 const name = theme === "light" ? `${stem}-light.html` : `${stem}.html`;
 const title = single ? "Your left knee: from MRI to marathon" : "Left knee v3: with the anatomy";
-const html = k.pageHtml({ title, theme, body, script: kitScript() + live, width: 700 });
+const SHARE = "An interactive knee built from a real MRI report: drag through walking, running, cycling and gym exercises and watch the kneecap, tendons and cartilage load. Educational, not medical advice.";
+const shareMeta = `<meta name="description" content="${SHARE}"><meta property="og:title" content="${title}"><meta property="og:description" content="${SHARE}"><meta property="og:type" content="website"><meta property="og:url" content="https://saadsaifse.github.io/knee-model-mri/"><meta property="og:image" content="https://saadsaifse.github.io/knee-model-mri/docs/screenshots/fig2-running-light.png"><meta name="twitter:card" content="summary_large_image">`;
+const page = k.pageHtml({ title, theme, body, script: kitScript() + live, width: 700 });
+const html = single ? page.replace("</title>", `</title>${shareMeta}`) : page;
 writeFileSync(join(HERE, name), html);
 console.log("wrote", name);
 if (single && theme === "light") {
