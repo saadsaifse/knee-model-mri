@@ -2,7 +2,7 @@
 
 An interactive, self-contained model of a left knee, driven by an MRI report. It shows what the kneecap, cartilage and tendons do during walking, running, cycling, home exercises and gym lifts, and lays out a 6-week marathon plan.
 
-**Live page:** https://saadsaifse.github.io/knee-model-mri/ (dark theme: [knee-v3.html](https://saadsaifse.github.io/knee-model-mri/knee-v3.html))
+**Live page:** https://saadsaifse.github.io/knee-model-mri/ (dark theme: [knee-model.html](https://saadsaifse.github.io/knee-model-mri/knee-model.html))
 
 > Educational model, not medical advice. The drawings are schematic, not traced from the scan, and the numbers come from published averages (Huberti & Hayes contact areas, a pulley model of the kneecap, a lateral shift calibrated to the MRI). Talk to your physio or doctor before acting on it.
 
@@ -31,24 +31,20 @@ Every figure has hover, a slider and play/pause.
 
 ## Files
 
-| Page | What it covers |
-|---|---|
-| `index.html` / `knee-v3.html` (+ `-light`) | Latest: anatomy views, running stride, cycling, gym comparison, cartilage crack, marathon plan |
-| `knee-v2.html` (+ `-light`) | Cycling, gym machines, cartilage and the marathon, without the anatomy panels |
-| `knee.html` (+ `-light`) | First version: walking and running, plus home exercises |
+`index.html` is the page: `knee-model-light.html`, served on GitHub Pages. `knee-model.html` is the dark theme. Every html file is standalone, so you can open it straight in a browser.
 
-The html files are standalone. Open any of them directly in a browser.
+Earlier drafts are kept for reference: `knee.html` (walking, running, home exercises), `knee-v2.html` (adds cycling, gym, cartilage and the marathon) and `knee-v3.html` (adds the anatomy views and the running stride), each with a `-light` twin.
 
 ## Rebuilding
 
 You need Node 18+ and no packages.
 
 ```sh
-node build-v3.mjs          # knee-v3.html
-node build-v3.mjs --light  # knee-v3-light.html
+node build-v3.mjs --page          # knee-model.html
+node build-v3.mjs --page --light  # knee-model-light.html and index.html
 ```
 
 - `model.mjs` holds the biomechanics: quad force, the force between the kneecap and the femur, contact area, lateral shift and facet stress. Every number shown on the pages comes from it.
 - `bench.mjs`, `mannequin.mjs`, `gym.mjs`, `exercises.mjs` and `anatomy-knee.mjs` hold the geometry and figures.
-- `v2/` and `v3/` hold the prose.
+- `page/` holds the prose. `v2/` and `v3/` hold the prose for the earlier drafts, built without `--page`.
 - `vendor/anatomy/` is the isometric drawing kit (MIT, see its LICENSE).

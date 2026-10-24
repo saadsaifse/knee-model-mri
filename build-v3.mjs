@@ -299,13 +299,18 @@ const PAGE_CSS = `
 @media (max-width:560px){.kn-term{grid-template-columns:1fr}.kn-term dd{margin-bottom:8px}}
 `;
 
-const read = (file) => readFileSync(join(HERE, "v2", file), "utf8");
+// --page builds the single, version-free page (knee-model.html, and index.html for GitHub Pages).
+const single = process.argv.includes("--page");
+const read = (file) => readFileSync(join(HERE, single ? "page" : "v2", file), "utf8");
+const readV3 = (file) => readFileSync(join(HERE, single ? "page" : "v3", file), "utf8");
+const PAGE_FIGS = { home: "Figs 4–9", gym: "Figs 10–13", strength: "Figs 4–13" };
 const prose = (html) => `<div class="kn-prose">${html}</div>`;
 const body = [
   `<style>${PAGE_CSS}${V2_CSS}${ANAT_CSS}</style>`,
-  prose(read("intro.html") + read("../v3/intro-add.html")),
+  prose(single ? read("intro.html") : read("intro.html") + readV3("intro-add.html")),
   fig1,
-  prose(read("../v3/running.html")),
+  single ? prose(read("bench.html")) : "",
+  prose(readV3("running.html")),
   exerciseFigures([RUN_CARD], { anatomy: true }),
   prose(read("cycling.html")),
   exerciseFigures([{ ...BIKE_CARD, fig: "Fig 3" }], { anatomy: true }),
@@ -313,12 +318,19 @@ const body = [
   exerciseFigures(HOME_CARDS_V2.map((card, i) => ({ ...card, fig: `Fig ${i + 4}` })), { anatomy: true }),
   prose(read("gym.html")),
   exerciseFigures(GYM_CARDS.map((card, i) => ({ ...card, fig: `Fig ${i + 10}` })), { anatomy: true }),
-  prose(read("compare.html") + comparisonTable()),
+  prose(read("compare.html") + (single ? comparisonTable(PAGE_FIGS) : comparisonTable())),
   prose(read("cartilage.html")),
-  prose(read("marathon.html") + marathonPlan()),
+  prose(read("marathon.html") + (single ? marathonPlan(PAGE_FIGS) : marathonPlan())),
   prose(read("outro.html")),
 ].join("");
 
-const name = theme === "light" ? "knee-v3-light.html" : "knee-v3.html";
-writeFileSync(join(HERE, name), k.pageHtml({ title: "Left knee v3: with the anatomy", theme, body, script: kitScript() + live, width: 700 }));
+const stem = single ? "knee-model" : "knee-v3";
+const name = theme === "light" ? `${stem}-light.html` : `${stem}.html`;
+const title = single ? "Your left knee: from MRI to marathon" : "Left knee v3: with the anatomy";
+const html = k.pageHtml({ title, theme, body, script: kitScript() + live, width: 700 });
+writeFileSync(join(HERE, name), html);
 console.log("wrote", name);
+if (single && theme === "light") {
+  writeFileSync(join(HERE, "index.html"), html);
+  console.log("wrote index.html");
+}

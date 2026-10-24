@@ -11,7 +11,7 @@ const peakExercise = (key) => {
   return { stress: peakOf(list, "lateralMpa"), tendon: peakOf(list, "tendonBw").tendonBw };
 };
 
-const ROWS = [
+const rowsOf = (figs) => [
   ["Everyday and sport", [
     ["Walking", () => peakActivity("walk"), "Fine. Low load, but this is where the kneecap rides furthest outward."],
     ["Stairs up", () => peakActivity("stairs"), "Fine. Use the rail if it catches."],
@@ -20,7 +20,7 @@ const ROWS = [
     ["Running, now", () => peakActivity("run"), "Your highest load. Dose it with the marathon plan below."],
     ["Running, +10% cadence, after rehab", () => peakActivity("run", "rehab"), "Where rehab and a quicker step get you."],
   ]],
-  ["Home exercises (Figs 3–8)", [
+  [`Home exercises (${figs.home})`, [
     ["Straight-leg raise", () => peakExercise("slr"), "Every day."],
     ["Clamshell with band", () => peakExercise("clam"), "Every day."],
     ["Glute bridge", () => peakExercise("bridge"), "Every day."],
@@ -28,7 +28,7 @@ const ROWS = [
     ["Slow step-down", () => peakExercise("stepdown"), "2–3× a week."],
     ["Spanish squat hold", () => peakExercise("spanish"), "2–3× a week, as tendon medicine."],
   ]],
-  ["Gym machines and lifts (Figs 9–12)", [
+  [`Gym machines and lifts (${figs.gym})`, [
     ["Hip abductor / adductor machine", () => peakExercise("abductor"), "Yes: the abductor is a strong choice for tracking."],
     ["Leg curl", () => peakExercise("legcurl"), "Yes. Hamstrings with no kneecap load."],
     ["Single-leg hip thrust", () => peakExercise("hipthrust"), "Yes. One of the best for running."],
@@ -40,10 +40,12 @@ const ROWS = [
   ]],
 ];
 
+const V2_FIGS = { home: "Figs 3–8", gym: "Figs 9–12", strength: "Figs 3–12" };
+
 const level = (mpa) => (mpa >= 7 ? 3 : mpa >= 4 ? 2 : 1);
 
-export function comparisonTable() {
-  const body = ROWS.map(([group, rows]) => {
+export function comparisonTable(figs = V2_FIGS) {
+  const body = rowsOf(figs).map(([group, rows]) => {
     const lines = rows.map(([label, peak, verdict]) => {
       const { stress, tendon } = peak();
       const width = Math.min(100, (stress.lateralMpa / 11) * 100).toFixed(0);
@@ -64,7 +66,7 @@ function runPeak(cadenceGain) {
   return peakOf(list, "lateralMpa").lateralMpa;
 }
 
-export function marathonPlan() {
+export function marathonPlan(figs = V2_FIGS) {
   const minutes = 4.25 * 60;
   const rows = [0, 5, 10].map((gain) => {
     const cadence = 165 * (1 + gain / 100);
@@ -73,7 +75,7 @@ export function marathonPlan() {
   const numbers = `<table class="kn-cmp"><thead><tr><th>Cadence, 4:15 marathon</th><th>Landings per leg</th><th>Peak outer-facet stress each landing</th></tr></thead><tbody>${rows}</tbody></table><p style="color:var(--anatomy-muted);font-size:12.5px">A quicker step means slightly more landings, each one lighter. Joint stress per landing matters more than the count, which is why cadence is the cheapest change you can make. Rehab strength (Fig 1, "After rehab") stacks on top of this.</p>`;
 
   const weeks = [
-    ["Oct 26 – Nov 1", "Consolidate", "3–4 easy runs. Long run = your longest recent pain-free run, no longer. Start the +5% cadence on every run. Strength 2× (Figs 3–12 in the green/amber rows). Bike instead of a 4th run if the knee is grumbling."],
+    ["Oct 26 – Nov 1", "Consolidate", `3–4 easy runs. Long run = your longest recent pain-free run, no longer. Start the +5% cadence on every run. Strength 2× (${figs.strength} in the green/amber rows). Bike instead of a 4th run if the knee is grumbling.`],
     ["Nov 2 – 8", "Build", "Long run +15–20 min if last week's long run followed the pain rule. Try run-walk on it (e.g. 9 min run / 1 min walk) and see how the knee feels the next morning. Strength 2×."],
     ["Nov 9 – 15", "Peak 1", "Longest run of the block: about 28–32 km or 3 h, whichever comes first, with run-walk. Flat route. Everything else easy. Strength 2×, lighter the day before the long run."],
     ["Nov 16 – 22", "Peak 2", "A second long run of about 26–30 km, or repeat last week's if that one left you sore. Strength 2×."],
