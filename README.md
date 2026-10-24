@@ -2,7 +2,7 @@
 
 An interactive, self-contained model of a left knee, driven by an MRI report. It shows what the kneecap, cartilage and tendons do during walking, running, cycling, home exercises and gym lifts, and lays out a 6-week marathon plan.
 
-**Live page:** https://saadsaifse.github.io/knee-model-mri/ (light theme: [knee-v3-light.html](https://saadsaifse.github.io/knee-model-mri/knee-v3-light.html))
+**Live page:** https://saadsaifse.github.io/knee-model-mri/ (dark theme: [knee-v3.html](https://saadsaifse.github.io/knee-model-mri/knee-v3.html))
 
 > Educational model, not medical advice. The drawings are schematic, not traced from the scan, and the numbers come from published averages (Huberti & Hayes contact areas, a pulley model of the kneecap, a lateral shift calibrated to the MRI). Talk to your physio or doctor before acting on it.
 
@@ -17,15 +17,15 @@ An interactive, self-contained model of a left knee, driven by an MRI report. It
 
 **Fig 1: patella tracking bench.** The kneecap rides in its groove as the knee bends. A gauge reads the outward shift and the stress on the outer facet.
 
-![Patella tracking bench](docs/screenshots/fig1-bench.png)
+![Patella tracking bench](docs/screenshots/fig1-bench-light.png)
 
 **Fig 2: one running stride.** A treadmill runner, with the knee shown from the side, from the front and in a cross-section slice. Every view moves with the stride.
 
-![Running stride with anatomy](docs/screenshots/fig2-running.png)
+![Running stride with anatomy](docs/screenshots/fig2-running-light.png)
 
 **Fig 3: cycling saddle height**, and **Fig 12: single-leg hip thrust** (one of 13 figures)
 
-<p><img src="docs/screenshots/fig3-cycling.png" width="49%" alt="Cycling"> <img src="docs/screenshots/fig12-hip-thrust.png" width="49%" alt="Single-leg hip thrust"></p>
+<p><img src="docs/screenshots/fig3-cycling-light.png" width="49%" alt="Cycling"> <img src="docs/screenshots/fig12-hip-thrust-light.png" width="49%" alt="Single-leg hip thrust"></p>
 
 Every figure has hover, a slider and play/pause.
 
